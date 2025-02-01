@@ -1,0 +1,41 @@
+{% extends 'utilisateurs/base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Inscription</h2>
+
+        <!-- Messages d'erreur ou de succès -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Affichage des champs du formulaire avec Bootstrap -->
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger small">
+                            {% for error in field.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+        </form>
+
+        <p class="text-center mt-3">
+            Déjà inscrit ? <a href="{% url 'login' %}" class="text-decoration-none">Se connecter</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

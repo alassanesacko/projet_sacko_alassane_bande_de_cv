@@ -1,0 +1,260 @@
+{% extends 'utilisateurs/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <a class="navbar-brand" href="#">Mon Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'generer_cv_pdf' %}" target="_blank">📄 Télécharger CV</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'envoyer_cv_email' %}">📧 Envoyer CV</a></li>
+                <li class="nav-item"><a class="nav-link text-danger" href="{% url 'logout' %}">🚪 Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Informations de l'utilisateur -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if etudiant.photo %}
+                        <img src="{{ etudiant.photo.url }}" alt="Photo de profil" class="img-fluid rounded-circle mb-3" width="120">
+                    {% endif %}
+                    <h5 class="card-title">{{ etudiant.username }}</h5>
+                    <p class="card-text"><strong>Email :</strong> {{ etudiant.email }}</p>
+                    <p class="card-text"><strong>Téléphone :</strong> {{ etudiant.tel }}</p>
+                    <p class="card-text"><strong>Adresse :</strong> {{ etudiant.adresse }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Votre CV</h3>
+                    {% if cv %}
+                        <p><strong>Titre :</strong> {{ cv.titre }}</p>
+                        <p><strong>Description :</strong> {{ cv.description }}</p>
+                        <a href="{% url 'gerer_cv' %}" class="btn btn-primary">Modifier mon CV</a>
+                    {% else %}
+                        <p class="text-muted">Aucun CV trouvé.</p>
+                        <a href="{% url 'gerer_cv' %}" class="btn btn-success">Créer un CV</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Section Expériences -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">📌 Expériences</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'ajouter_experience' cv.id %}" class="btn btn-success w-100 mb-2">
+                            ➕ Ajouter une expérience
+                        </a>
+                        {% if cv.experience_set.all %}
+                            <ul class="list-group">
+                                {% for exp in cv.experience_set.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><strong>{{ exp.poste }}</strong> - {{ exp.entreprise }}</span>
+                                        <span>
+                                            <a href="{% url 'modifier_experience' exp.id %}" class="btn btn-sm btn-warning">
+                                                ✏️
+                                            </a>
+                                            <a href="{% url 'supprimer_experience' exp.id %}" class="btn btn-sm btn-danger">
+                                                ❌
+                                            </a>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">Aucune expérience ajoutée.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Section Formations -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-white">
+                        <h5 class="mb-0">🎓 Formations</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'ajouter_formation' cv.id %}" class="btn btn-success w-100 mb-2">
+                            ➕ Ajouter une formation
+                        </a>
+                        {% if cv.formation_set.all %}
+                            <ul class="list-group">
+                                {% for formation in cv.formation_set.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><strong>{{ formation.diplome }}</strong> - {{ formation.etablissement }}</span>
+                                        <span>
+                                            <a href="{% url 'modifier_formation' formation.id %}" class="btn btn-sm btn-warning">
+                                                ✏️
+                                            </a>
+                                            <a href="{% url 'supprimer_formation' formation.id %}" class="btn btn-sm btn-danger">
+                                                ❌
+                                            </a>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">Aucune formation ajoutée.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-4">
+            <!-- Section Compétences -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">💼 Compétences</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'ajouter_competence' cv.id %}" class="btn btn-success w-100 mb-2">
+                            ➕ Ajouter une compétence
+                        </a>
+                        {% if cv.competence_set.all %}
+                            <ul class="list-group">
+                                {% for comp in cv.competence_set.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><strong>{{ comp.libelle }}</strong> - Niveau : {{ comp.niveau }}</span>
+                                        <span>
+                                            <a href="{% url 'modifier_competence' comp.id %}" class="btn btn-sm btn-warning">
+                                                ✏️
+                                            </a>
+                                            <a href="{% url 'supprimer_competence' comp.id %}" class="btn btn-sm btn-danger">
+                                                ❌
+                                            </a>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">Aucune compétence ajoutée.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Section Langues -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">🌍 Langues</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'ajouter_langue' cv.id %}" class="btn btn-success w-100 mb-2">
+                            ➕ Ajouter une langue
+                        </a>
+                        {% if cv.langue_set.all %}
+                            <ul class="list-group">
+                                {% for langue in cv.langue_set.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><strong>{{ langue.libelle }}</strong> - Niveau : {{ langue.niveau }}</span>
+                                        <span>
+                                            <a href="{% url 'modifier_langue' langue.id %}" class="btn btn-sm btn-warning">
+                                                ✏️
+                                            </a>
+                                            <a href="{% url 'supprimer_langue' langue.id %}" class="btn btn-sm btn-danger">
+                                                ❌
+                                            </a>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">Aucune langue ajoutée.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Section Projets -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">📁 Projets</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'ajouter_projet' cv.id %}" class="btn btn-success w-100 mb-2">
+                            ➕ Ajouter un projet
+                        </a>
+                        {% if cv.projet_set.all %}
+                            <ul class="list-group">
+                                {% for projet in cv.projet_set.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><strong>{{ projet.titre }}</strong></span>
+                                        <span>
+                                            <a href="{% url 'modifier_projet' projet.id %}" class="btn btn-sm btn-warning">
+                                                ✏️
+                                            </a>
+                                            <a href="{% url 'supprimer_projet' projet.id %}" class="btn btn-sm btn-danger">
+                                                ❌
+                                            </a>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">Aucun projet ajouté.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    {% for section, liste, url_ajout in sections %}
+        <div class="mt-4">
+            <h3>{{ section }}</h3>
+            <a href="{% url url_ajout cv.id %}" class="btn btn-primary mb-2">➕ Ajouter</a>
+            {% if liste %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr><th>Nom</th><th>Niveau</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for item in liste %}
+                        <tr>
+                            <td>{{ item.libelle }}</td>
+                            <td>{{ item.niveau }}</td>
+                            <td>
+                                <a href="{% url item.modifier_url item.id %}" class="btn btn-sm btn-warning">✏️</a>
+                                <a href="{% url item.supprimer_url item.id %}" class="btn btn-sm btn-danger">❌</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">Aucun {{ section|lower }} ajouté.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</div>
+
+<!-- Footer -->
+<footer class="text-center mt-5 py-3 bg-dark">
+    <p>© 2025 Mon Site - Tous droits réservés</p>
+</footer>
+
+{% endblock %}

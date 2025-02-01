@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>CV - {{ etudiant.username }}</title>
+    <link rel="stylesheet" href="{% static 'cv/css/cv_design1.css' %}">
+</head>
+<body>
+    <header>
+        <h1>{{ etudiant.username }} {{ etudiant.username }}</h1>
+        <p>Email: {{ etudiant.email }} | Téléphone: {{ etudiant.tel }}</p>
+    </header>
+    
+    <section>
+        <h2>Expériences</h2>
+        {% for exp in experiences %}
+            <p><strong>{{ exp.poste }}</strong> chez {{ exp.entreprise }} ({{ exp.date_debut }} - {{ exp.date_fin }})</p>
+        {% endfor %}
+    </section>
+
+    <section>
+        <h2>Formations</h2>
+        {% for formation in formations %}
+            <p>{{ formation.diplome }} - {{ formation.etablissement }} ({{ formation.date_debut }} - {{ formation.date_fin }})</p>
+        {% endfor %}
+    </section>
+</body>
+</html>

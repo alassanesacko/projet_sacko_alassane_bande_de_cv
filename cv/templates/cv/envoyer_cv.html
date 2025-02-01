@@ -1,0 +1,13 @@
+{% extends 'cv/base.html' %}
+
+{% block content %}
+<h2>📧 Envoyer mon CV par email</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="email">Envoyer le CV à :</label>
+    <input type="email" name="email" required placeholder="exemple@email.com">
+    <button type="submit">📩 Envoyer</button>
+</form>
+
+{% endblock %}
