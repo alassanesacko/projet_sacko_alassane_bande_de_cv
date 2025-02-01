@@ -5,12 +5,11 @@ from .models import Etudiant
 class EtudiantCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     tel = forms.CharField(max_length=20, required=False)
-    adresse = forms.CharField(widget=forms.Textarea, required=False)
     photo = forms.ImageField(required=False)
 
     class Meta:
         model = Etudiant
-        fields = ['username', 'email', 'tel', 'adresse', 'photo', 'password1', 'password2']
+        fields = ['username', 'email', 'tel', 'photo', 'password1', 'password2']
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label="Nom d'utilisateur")

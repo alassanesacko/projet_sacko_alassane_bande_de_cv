@@ -1,0 +1,52 @@
+{% extends 'utilisateurs/base.html' %}
+
+{% block title %}Trombinoscope{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Trombinoscope des Étudiants</h2>
+    
+    <div class="row">
+        {% for etudiant in page_obj %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg">
+                {% if etudiant.photo %}
+                    <img src="{{ etudiant.photo.url }}" class="card-img-top" alt="Photo de {{ etudiant.username }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/200" class="card-img-top" alt="Aucune photo">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ etudiant.username }}</h5>
+                    <p class="card-text"><strong>Email :</strong> {{ etudiant.email }}</p>
+                    {% if etudiant.cv %}
+                        <p><strong>CV :</strong> {{ etudiant.cv.titre }}</p>
+                        <a href="{% url 'generer_cv_pdf' %}" class="btn btn-primary btn-sm">Voir CV</a>
+                    {% else %}
+                        <p class="text-muted">Aucun CV disponible</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Aucun étudiant trouvé.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; Premier</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
+            {% endif %}
+
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Dernier &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

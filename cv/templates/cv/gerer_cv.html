@@ -4,14 +4,14 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <label for="design">Choisir un modèle de CV :</label>
+<!--     <label for="design">Choisir un modèle de CV :</label>
 <select name="design" id="design">
     <option value="design1">Modèle Classique</option>
     <option value="design2">Modèle Moderne</option>
     <option value="design3">Modèle Créatif</option>
 </select>
-
-    <button type="submit">Enregistrer</button>
+ -->
+    <button class="btn btn-primary" type="submit">Enregistrer</button>
 </form>
 <a href="{% url 'dashboard' %}">Retour au Dashboard</a>
 {% endblock %}

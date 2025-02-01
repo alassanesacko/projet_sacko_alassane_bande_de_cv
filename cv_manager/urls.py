@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from utilisateurs.views import trombinoscope
 from django.urls import path, include
 
 urlpatterns = [
+    path('', trombinoscope, name='trombinoscope'),
     path('admin/', admin.site.urls),
     path('utilisateurs/', include('utilisateurs.urls')),
     path('cv/', include('cv.urls')),  # Inclure les URLs de l'application CV
