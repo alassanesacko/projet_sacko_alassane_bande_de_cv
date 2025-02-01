@@ -71,7 +71,7 @@
                                             <a href="{% url 'modifier_experience' exp.id %}" class="btn btn-sm btn-warning">
                                                 ✏️
                                             </a>
-                                            <a href="{% url 'supprimer_experience' exp.id %}" class="btn btn-sm btn-danger">
+                                            <a href="{% url 'supprimer_experience' exp.id %}" class="btn btn-sm btn-danger" onclick="confirmDelete()">
                                                 ❌
                                             </a>
                                         </span>
@@ -104,7 +104,7 @@
                                             <a href="{% url 'modifier_formation' formation.id %}" class="btn btn-sm btn-warning">
                                                 ✏️
                                             </a>
-                                            <a href="{% url 'supprimer_formation' formation.id %}" class="btn btn-sm btn-danger">
+                                            <a href="{% url 'supprimer_formation' formation.id %}" class="btn btn-sm btn-danger" onclick="confirmDelete()">
                                                 ❌
                                             </a>
                                         </span>
@@ -139,7 +139,7 @@
                                             <a href="{% url 'modifier_competence' comp.id %}" class="btn btn-sm btn-warning">
                                                 ✏️
                                             </a>
-                                            <a href="{% url 'supprimer_competence' comp.id %}" class="btn btn-sm btn-danger">
+                                            <a href="{% url 'supprimer_competence' comp.id %}" class="btn btn-sm btn-danger" onclick="confirmDelete()">
                                                 ❌
                                             </a>
                                         </span>
@@ -172,7 +172,7 @@
                                             <a href="{% url 'modifier_langue' langue.id %}" class="btn btn-sm btn-warning">
                                                 ✏️
                                             </a>
-                                            <a href="{% url 'supprimer_langue' langue.id %}" class="btn btn-sm btn-danger">
+                                            <a href="{% url 'supprimer_langue' langue.id %}" class="btn btn-sm btn-danger" onclick='confirm(" Êtes-vous sûr de vouloir supprimer ce projet ?")'>
                                                 ❌
                                             </a>
                                         </span>
@@ -205,7 +205,7 @@
                                             <a href="{% url 'modifier_projet' projet.id %}" class="btn btn-sm btn-warning">
                                                 ✏️
                                             </a>
-                                            <a href="{% url 'supprimer_projet' projet.id %}" class="btn btn-sm btn-danger">
+                                            <a href="{% url 'supprimer_projet' projet.id %}" class="btn btn-sm btn-danger" onclick="confirmDelete()">
                                                 ❌
                                             </a>
                                         </span>
@@ -251,7 +251,15 @@
     {% endfor %}
 
 </div>
-
+<script>
+    function confirmDelete() {
+        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce projet ?");
+        if (confirmation) {
+            // Si l'utilisateur confirme, on soumet le formulaire
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>
 <!-- Footer -->
 <footer class="text-center mt-5 py-3 bg-light" >
     <p>© 2025 Mon Site - Tous droits réservés</p>
