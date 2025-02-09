@@ -45,6 +45,31 @@ def ajouter_experience(request):
         form = ExperienceForm()
 
     return render(request, 'cv/ajouter_experience.html', {'form': form})
+# Exemple pour modifier une expérience
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Experience
+from .forms import ExperienceForm
+
+@login_required
+def modifier_experience(request, id):
+    experience = get_object_or_404(Experience, id=id)
+    if request.method == 'POST':
+        form = ExperienceForm(request.POST, instance=experience)
+        if form.is_valid():
+            form.save()
+            return redirect('profil', user_id=request.user.id)
+    else:
+        form = ExperienceForm(instance=experience)
+    return render(request, 'cv/modifier_experience.html', {'form': form})
+
+# Pour supprimer une expérience
+@login_required
+def supprimer_experience(request, id):
+    experience = get_object_or_404(Experience, id=id)
+    experience.delete()
+    return redirect('profil', user_id=request.user.id)
+
+
 @login_required
 def ajouter_formation(request):
     cv = get_object_or_404(CV, etudiant=request.user)
@@ -61,6 +86,27 @@ def ajouter_formation(request):
         form = FormationForm()
 
     return render(request, 'cv/ajouter_formation.html', {'form': form})
+
+# Vues pour modifier une formation
+@login_required
+def modifier_formation(request, id):
+    formation = get_object_or_404(Formation, id=id)
+    if request.method == 'POST':
+        form = FormationForm(request.POST, instance=formation)
+        if form.is_valid():
+            form.save()
+            return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur
+    else:
+        form = FormationForm(instance=formation)
+    return render(request, 'cv/modifier_formation.html', {'form': form})
+
+# Vues pour supprimer une formation
+@login_required
+def supprimer_formation(request, id):
+    formation = get_object_or_404(Formation, id=id)
+    formation.delete()
+    return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur
+
 
 
 @login_required
@@ -80,6 +126,27 @@ def ajouter_langue(request):
 
     return render(request, 'cv/ajouter_langue.html', {'form': form})
 
+# Vues pour modifier une langue
+@login_required
+def modifier_langue(request, id):
+    langue = get_object_or_404(Langue, id=id)
+    if request.method == 'POST':
+        form = LangueForm(request.POST, instance=langue)
+        if form.is_valid():
+            form.save()
+            return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur
+    else:
+        form = LangueForm(instance=langue)
+    return render(request, 'cv/modifier_langue.html', {'form': form})
+
+# Vues pour supprimer une langue
+@login_required
+def supprimer_langue(request, id):
+    langue = get_object_or_404(Langue, id=id)
+    langue.delete()
+    return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur
+
+
 
 @login_required
 def ajouter_competence(request):
@@ -97,3 +164,22 @@ def ajouter_competence(request):
         form = CompetenceForm()
 
     return render(request, 'cv/ajouter_competence.html', {'form': form})
+# Vues pour modifier une compétence
+@login_required
+def modifier_competence(request, id):
+    competence = get_object_or_404(Competence, id=id)
+    if request.method == 'POST':
+        form = CompetenceForm(request.POST, instance=competence)
+        if form.is_valid():
+            form.save()
+            return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur
+    else:
+        form = CompetenceForm(instance=competence)
+    return render(request, 'cv/modifier_competence.html', {'form': form})
+
+# Vues pour supprimer une compétence
+@login_required
+def supprimer_competence(request, id):
+    competence = get_object_or_404(Competence, id=id)
+    competence.delete()
+    return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur

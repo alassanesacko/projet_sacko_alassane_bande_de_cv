@@ -7,21 +7,151 @@
     <div class="card shadow-lg p-4 rounded-4">
         <div class="text-center">
             {% if etudiant.photo %}
-                <img src="{{ etudiant.photo.url }}" alt="Photo de {{ etudiant.nom }}" class="rounded-circle" width="150">
+                <img src="{{ etudiant.photo.url }}" alt="Photo de {{ etudiant.nom }}" class="rounded-circle" width="150" height="150">
             {% else %}
-                <img src="https://via.placeholder.com/150" alt="Aucune photo" class="rounded-circle">
+                <img src="https://via.placeholder.com/150" alt="Aucune photo" class="rounded-circle" width="150" height="150">
             {% endif %}
         </div>
         <h2 class="text-center mt-3">{{ etudiant.nom }} {{ etudiant.prenom }}</h2>
         <p class="text-center text-muted">📧 {{ etudiant.email }}</p>
 
-        <hr>
+        <hr class="my-4">
 
-        <h4>📞 Contact</h4>
-        <p><strong>Téléphone :</strong> {{ etudiant.tel }}</p>
-        <p><strong>Adresse :</strong> {{ etudiant.adresse }}</p>
+        <!-- Contact Information -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4>📞 Contact</h4>
+                <p><strong>Téléphone :</strong> {{ etudiant.tel }}</p>
+                <p><strong>Adresse :</strong> {{ etudiant.adresse }}</p>
+            </div>
+            <div class="col-md-6">
+                <h4>📝 CV et Informations</h4>
+            </div>
+        </div>
 
-        
+        <div class="accordion" id="cvAccordion">
+            <!-- Expériences -->
+            <div class="card">
+                <div class="card-header" id="experienceHeading">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#experienceCollapse" aria-expanded="true" aria-controls="experienceCollapse">
+                            🔧 Expériences
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="experienceCollapse" class="collapse show" aria-labelledby="experienceHeading" data-bs-parent="#cvAccordion">
+                    <div class="card-body">
+                        {% if cv.experiences.all %}
+                            <ul class="list-group">
+                                {% for exp in cv.experiences.all %}
+                                    <li class="list-group-item">
+                                        <strong>{{ exp.poste }}</strong> chez {{ exp.entreprise }} ({{ exp.date_debut }} - {{ exp.date_fin }})
+                                        <a href="{% url 'modifier_experience' exp.id %}" class="btn btn-warning btn-sm float-end ms-2">Modifier</a>
+                                        <a href="{% url 'supprimer_experience' exp.id %}" class="btn btn-danger btn-sm float-end" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette expérience ?')">Supprimer</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucune expérience ajoutée.</p>
+                        {% endif %}
+                        <a href="{% url 'ajouter_experience' %}" class="btn btn-success w-100 mt-3">Ajouter une expérience</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formations -->
+            <div class="card">
+                <div class="card-header" id="formationHeading">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#formationCollapse" aria-expanded="true" aria-controls="formationCollapse">
+                            🎓 Formations
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="formationCollapse" class="collapse" aria-labelledby="formationHeading" data-bs-parent="#cvAccordion">
+                    <div class="card-body">
+                        {% if cv.formations.all %}
+                            <ul class="list-group">
+                                {% for formation in cv.formations.all %}
+                                    <li class="list-group-item">
+                                        <strong>{{ formation.diplome }}</strong> à {{ formation.etablissement }} ({{ formation.date_debut }} - {{ formation.date_fin }})
+                                        <a href="{% url 'modifier_formation' formation.id %}" class="btn btn-warning btn-sm float-end ms-2">Modifier</a>
+                                        <a href="{% url 'supprimer_formation' formation.id %}" class="btn btn-danger btn-sm float-end" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ?')">Supprimer</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucune formation ajoutée.</p>
+                        {% endif %}
+                        <a href="{% url 'ajouter_formation' %}" class="btn btn-success w-100 mt-3">Ajouter une formation</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compétences -->
+            <div class="card">
+                <div class="card-header" id="competenceHeading">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#competenceCollapse" aria-expanded="true" aria-controls="competenceCollapse">
+                            💼 Compétences
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="competenceCollapse" class="collapse" aria-labelledby="competenceHeading" data-bs-parent="#cvAccordion">
+                    <div class="card-body">
+                        {% if cv.competences.all %}
+                            <ul class="list-group">
+                                {% for competence in cv.competences.all %}
+                                    <li class="list-group-item">
+                                        <strong>{{ competence.libelle }}</strong> (Niveau: {{ competence.niveau }})
+                                        <a href="{% url 'modifier_competence' competence.id %}" class="btn btn-warning btn-sm float-end ms-2">Modifier</a>
+                                        <a href="{% url 'supprimer_competence' competence.id %}" class="btn btn-danger btn-sm float-end" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette compétence ?')">Supprimer</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucune compétence ajoutée.</p>
+                        {% endif %}
+                        <a href="{% url 'ajouter_competence' %}" class="btn btn-success w-100 mt-3">Ajouter une compétence</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Langues -->
+            <div class="card">
+                <div class="card-header" id="langueHeading">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#langueCollapse" aria-expanded="true" aria-controls="langueCollapse">
+                            🗣️ Langues
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="langueCollapse" class="collapse" aria-labelledby="langueHeading" data-bs-parent="#cvAccordion">
+                    <div class="card-body">
+                        {% if cv.langues.all %}
+                            <ul class="list-group">
+                                {% for langue in cv.langues.all %}
+                                    <li class="list-group-item">
+                                        <strong>{{ langue.libelle }}</strong> (Niveau: {{ langue.niveau }})
+                                        <a href="{% url 'modifier_langue' langue.id %}" class="btn btn-warning btn-sm float-end ms-2">Modifier</a>
+                                        <a href="{% url 'supprimer_langue' langue.id %}" class="btn btn-danger btn-sm float-end" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette langue ?')">Supprimer</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucune langue ajoutée.</p>
+                        {% endif %}
+                        <a href="{% url 'ajouter_langue' %}" class="btn btn-success w-100 mt-3">Ajouter une langue</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}
+
