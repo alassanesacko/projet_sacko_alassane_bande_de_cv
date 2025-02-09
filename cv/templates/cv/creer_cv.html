@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<h2>Créer votre CV</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form>
+{% endblock %}

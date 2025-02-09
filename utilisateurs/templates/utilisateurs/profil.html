@@ -1,0 +1,27 @@
+{% extends 'cv/base.html' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 rounded-4">
+        <div class="text-center">
+            {% if etudiant.photo %}
+                <img src="{{ etudiant.photo.url }}" alt="Photo de {{ etudiant.nom }}" class="rounded-circle" width="150">
+            {% else %}
+                <img src="https://via.placeholder.com/150" alt="Aucune photo" class="rounded-circle">
+            {% endif %}
+        </div>
+        <h2 class="text-center mt-3">{{ etudiant.nom }} {{ etudiant.prenom }}</h2>
+        <p class="text-center text-muted">📧 {{ etudiant.email }}</p>
+
+        <hr>
+
+        <h4>📞 Contact</h4>
+        <p><strong>Téléphone :</strong> {{ etudiant.tel }}</p>
+        <p><strong>Adresse :</strong> {{ etudiant.adresse }}</p>
+
+        
+    </div>
+</div>
+{% endblock %}

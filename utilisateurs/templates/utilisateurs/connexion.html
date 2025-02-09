@@ -1,0 +1,17 @@
+{% extends 'cv/base.html' %}
+{% block content %}
+<div class="container mb-4">
+    <div class="card mx-auto mt-4 shadow" style="max-width: 400px;">
+        <div class="card-header bg-dark text-white text-center">
+            <h5>Connexion</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-dark w-100">Se connecter</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

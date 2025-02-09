@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<h2 class="text-center my-4">Modifier votre CV</h2>
+
+<div class="card mb-4">
+    <div class="card-header">Informations Générales</div>
+    <div class="card-body">
+        <p><strong>Titre :</strong> {{ cv.titre }}</p>
+        <p><strong>Description :</strong> {{ cv.description }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between">
+                <span>Expériences</span>
+                <a href="{% url 'ajouter_experience' %}" class="btn btn-sm btn-primary">Ajouter</a>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for exp in experiences %}
+                        <li class="list-group-item">{{ exp.poste }} chez {{ exp.entreprise }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between">
+                <span>Formations</span>
+                <a href="{% url 'ajouter_formation' %}" class="btn btn-sm btn-primary">Ajouter</a>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for formation in formations %}
+                        <li class="list-group-item">{{ formation.diplome }} à {{ formation.etablissement }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between">
+                <span>Langues</span>
+                <a href="{% url 'ajouter_langue' %}" class="btn btn-sm btn-primary">Ajouter</a>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for langue in langues %}
+                        <li class="list-group-item">{{ langue.libelle }} - {{ langue.niveau }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between">
+                <span>Compétences</span>
+                <a href="{% url 'ajouter_competence' %}" class="btn btn-sm btn-primary">Ajouter</a>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for competence in competences %}
+                        <li class="list-group-item">{{ competence.libelle }} - {{ competence.niveau }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
