@@ -14,6 +14,7 @@
         </div>
         <h2 class="text-center mt-3">{{ etudiant.nom }} {{ etudiant.prenom }}</h2>
         <p class="text-center text-muted">📧 {{ etudiant.email }}</p>
+        <a href="{% url 'generer_pdf' cv.id %}" class="btn btn-success col-md-4" target="_blank">Télécharger en PDF</a>
 
         <hr class="my-4">
 

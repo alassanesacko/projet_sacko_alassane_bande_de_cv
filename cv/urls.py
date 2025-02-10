@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('cv/<int:cv_id>/pdf/', views.generer_pdf, name='generer_pdf'),
+
     path('creer/', views.creer_cv, name='creer_cv'),
     path('modifier/', views.modifier_cv, name='modifier_cv'),
     path('ajouter-experience/', views.ajouter_experience, name='ajouter_experience'),

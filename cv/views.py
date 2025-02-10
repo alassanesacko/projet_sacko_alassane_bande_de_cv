@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import CV, Experience, Formation, Langue, Competence, Projet
 from .forms import CVForm, ExperienceForm, FormationForm, LangueForm, CompetenceForm, ProjetForm
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import tempfile
 
 @login_required
 def creer_cv(request):
@@ -183,3 +187,20 @@ def supprimer_competence(request, id):
     competence = get_object_or_404(Competence, id=id)
     competence.delete()
     return redirect('profil',user_id=request.user.id)  # Redirection vers le profil de l'utilisateur
+
+
+
+def generer_pdf(request, cv_id):
+    cv = get_object_or_404(CV, id=cv_id, etudiant=request.user)
+    
+    html_string = render_to_string('cv/cv_pdf.html', {'cv': cv})
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename="CV_{cv.titre}.pdf"'
+
+    with tempfile.NamedTemporaryFile(delete=True) as tmpfile:
+        HTML(string=html_string).write_pdf(tmpfile.name)
+        with open(tmpfile.name, 'rb') as pdf:
+            response.write(pdf.read())
+
+    return response

@@ -14,7 +14,7 @@ def inscription(request):
         if form.is_valid():
             user = form.save()
             # Création automatique du CV après l'inscription
-            CV.objects.create(etudiant=user.etudiant, titre="Mon CV", description="CV généré automatiquement")
+            CV.objects.create(etudiant=request.user, titre="Mon CV", description="CV généré automatiquement")
             login(request, user)
             messages.success(request, "Inscription réussie ! Votre CV a été créé.")
             return redirect('profil', user_id=user.id)
@@ -30,8 +30,8 @@ def connexion(request):
             user = form.get_user()
             login(request, user)
             # Vérifier si l'utilisateur a un CV, sinon en créer un
-            if not CV.objects.filter(etudiant=user.etudiant).exists():
-                CV.objects.create(etudiant=user.etudiant, titre="Mon CV", description="CV généré automatiquement")
+            if not CV.objects.filter(etudiant=request.user).exists():
+                CV.objects.create(etudiant=request.user, titre="Mon CV", description="CV généré automatiquement")
             return redirect('profil', user_id=user.id)
     else:
         form = AuthenticationForm()
