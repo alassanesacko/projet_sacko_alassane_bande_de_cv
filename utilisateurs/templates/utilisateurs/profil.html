@@ -1,5 +1,5 @@
 {% extends 'cv/base.html' %}
-
+{% load static %}
 {% block title %}Mon Profil{% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
             {% if etudiant.photo %}
                 <img src="{{ etudiant.photo.url }}" alt="Photo de {{ etudiant.nom }}" class="rounded-circle" width="150" height="150">
             {% else %}
-                <img src="https://via.placeholder.com/150" alt="Aucune photo" class="rounded-circle" width="150" height="150">
+                <img src="" alt="Aucune photo" class="rounded-circle" width="150" height="150">
             {% endif %}
         </div>
         <h2 class="text-center mt-3">{{ etudiant.nom }} {{ etudiant.prenom }}</h2>

@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-FR'
 
 TIME_ZONE = 'UTC'
 
@@ -126,3 +126,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'utilisateurs.Etudiant'
+
+import os
+
+# Répertoire pour stocker les fichiers téléchargés
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Crée un dossier 'media' dans ton projet
+
+# URL pour accéder aux fichiers médias
+MEDIA_URL = '/media/'  # Cela correspond à l'URL accessible depuis le navigateur
+
+STATICFILES_DIRS= (os.path.join(BASE_DIR,'static'),)
