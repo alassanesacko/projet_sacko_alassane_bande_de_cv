@@ -13,9 +13,10 @@ def inscription(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            login(request, user)
+
             # Création automatique du CV après l'inscription
             CV.objects.create(etudiant=request.user, titre="Mon CV", description="CV généré automatiquement")
-            login(request, user)
             messages.success(request, "Inscription réussie ! Votre CV a été créé.")
             return redirect('profil', user_id=user.id)
     else:
