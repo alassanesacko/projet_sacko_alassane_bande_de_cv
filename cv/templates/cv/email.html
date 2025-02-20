@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% if messages %}
+    <div class="alert alert-info" role="alert">
+        <ul class="mb-0">
+            {% for message in messages %}
+                <li class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+  <div class="container mt-5 mb-5 " style="height: 65vh;">
+    <div class="row mt-5 justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg">
+          <div class="card-header text-center bg-primary text-white">
+            <h3>Envoyer un message</h3>
+          </div>
+          <div class="card-body">
+            <form method="post">
+                {% csrf_token %} 
+              <!-- Champ Email -->
+              <div class="mb-3">
+                <label for="email" class="form-label">Adresse E-mail</label>
+                <input type="email" name="email" class="form-control" id="email" required>
+                <div class="invalid-feedback">
+                  Veuillez entrer une adresse e-mail valide.
+                </div>
+              </div>
+
+              <!-- Bouton d'envoi -->
+              <button type="submit" class="btn btn-primary w-100">Envoyer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Script pour la validation du formulaire -->
+  <script>
+    // Activation de la validation Bootstrap
+    (function () {
+      'use strict'
+      var forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+          }, false)
+        })
+    })()
+  </script>
+
+
+
+{% endblock %}

@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
+from emailapp.views import envoi_mail
 
 urlpatterns = [
     path('cv/<int:cv_id>/pdf/', views.generer_pdf, name='generer_pdf'),
+    path('mail/<int:cv_id>/', envoi_mail, name='envoi_mail'),
 
     path('creer/', views.creer_cv, name='creer_cv'),
     path('modifier/', views.modifier_cv, name='modifier_cv'),

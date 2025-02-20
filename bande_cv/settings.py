@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-trx=zxsak$e)qhm$fr^c!@0)qt!sj%se07$v1=66y!oxli(om)'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cv',
     'utilisateurs',
-    'trombinoscope'
+    'trombinoscope',
+    'emailapp'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Crée un dossier 'media' dans to
 MEDIA_URL = '/media/'  # Cela correspond à l'URL accessible depuis le navigateur
 
 STATICFILES_DIRS= (os.path.join(BASE_DIR,'static'),)
+
+# EMAIL CONFIGURATION
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST= config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
